@@ -1,26 +1,58 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = ({anecdotes}) => {
+const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
-
+  
   return (
     <div>
-      {anecdotes[selected]}
-      <br/>
-      has {votes[selected]} votes
+      <h1>Anecdote of the day</h1>
+      <ShowAnecdote selected={selected} votes={votes} />
       <br/>
       <button onClick={() => setVotes(createNewVotes(votes,selected))} >Vote</button>
       <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} >Next Anecdote</button>
+      <MostVoted votes={votes} />
+    </div>
+    
+  )
+}
+
+const MostVoted = ({votes}) => {
+
+  let mostVotedIndex = 0;
+  let mostVotes = 0;
+
+  votes.forEach((anecdoteVotes, i) => {
+    if(anecdoteVotes > mostVotes){
+      mostVotedIndex = i;
+      mostVotes = anecdoteVotes;
+    }
+  });
+
+  return(
+    <div>
+      <h2>Anecdote with most votes</h2>
+      <ShowAnecdote selected={mostVotedIndex} votes={votes} />
     </div>
   )
 }
 
-const createNewVotes = (old, selected) =>{
-  const newArr = { ...old };
+const ShowAnecdote = ({selected, votes}) => {
+  return(
+    <div>
+      {anecdotes[selected]}
+      <br/>
+      has {votes[selected]} votes
+    </div>
+  )
+}
+
+const createNewVotes = (old, selected) => {
+  const newArr = [ ...old ];
   newArr[selected] += 1;
+  console.log(newArr);
   return newArr;
 
 }
