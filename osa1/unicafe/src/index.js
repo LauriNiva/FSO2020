@@ -5,10 +5,26 @@ import ReactDOM from 'react-dom'
 //   return <h2>Give Feedback Here</h2>
 // }
 
-// const Statistics = () => {
-//   return <h2>Statistics</h2>
+const Statistics = ({good, neutral, bad}) => {
 
-// }
+  const total = good + neutral + bad;
+  const avg = ((good * 1 + (bad * -1)) / total).toFixed(2);
+  const positive = (good / total * 100).toFixed(2) ;
+
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>Total Feedbacks given: {total}</p>
+      <p>Average: {avg} </p>
+      <p>Positive: {positive}%</p>
+    </div>
+
+  );
+
+}
 
 const Button = ({ name, handleClick }) => {
   return <button onClick={handleClick} >{name}</button>
@@ -30,10 +46,8 @@ const App = () => {
       <Button name="Good =)" handleClick={increaseGood} />
       <Button name="Neutral =/" handleClick={increaseNeutral} />
       <Button name="Bad =(" handleClick={increaseBad} />
-      <h2>Statistics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
+      <Statistics good={good} neutral={neutral} bad={bad} />
+      
     </div>
   )
 }
