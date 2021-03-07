@@ -7,9 +7,18 @@ import ReactDOM from 'react-dom'
 
 const Statistics = ({good, neutral, bad}) => {
 
+
   const total = good + neutral + bad;
   const avg = ((good * 1 + (bad * -1)) / total).toFixed(2);
   const positive = (good / total * 100).toFixed(2) ;
+
+  if (total === 0) return(
+    <div>
+      <h2>Statistics</h2>
+      <p>No feedback given yet</p>
+    </div>
+
+  )
 
   return (
     <div>
