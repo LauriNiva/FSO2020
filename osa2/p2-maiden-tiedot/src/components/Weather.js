@@ -14,7 +14,6 @@ const Weather = ({ capital, api_key }) => {
     }, [capital, api_key]);
   
     if (capitalWeather.current) {
-  
       const weatherImages = capitalWeather.current.weather_icons.map(
         img => <div key={img}><img src={img} alt="" /></div>
       );
@@ -23,7 +22,7 @@ const Weather = ({ capital, api_key }) => {
         <div>
           Temperature: {capitalWeather.current.temperature} Celsius<br/>
           {weatherImages}
-          Wind: {capitalWeather.current.wind_speed} km/h direction {capitalWeather.current.win_dir}
+          Wind: {capitalWeather.current.wind_speed} km/h direction {capitalWeather.current.wind_dir}
         </div>
       );
     } else {
