@@ -46,10 +46,16 @@ const App = () => {
             name: newName,
             number: newNumber
         };
-        setPersons(persons.concat(newObject));
 
-        setNewName("");
-        setNewNumber("");
+        axios.post("http://localhost:3001/persons", newObject)
+            .then(response => {
+                setPersons(persons.concat(response.data));
+                setNewName("");
+                setNewNumber("");
+            });
+
+
+
     }
 
     const personsToShow = persons.filter(person =>
