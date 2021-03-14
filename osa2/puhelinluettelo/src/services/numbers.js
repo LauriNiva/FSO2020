@@ -20,7 +20,7 @@ const updateNumber = (id, updatedObject) => {
 
 const deleteItem = id => {
     const itemUrl = `${baseUrl}/${id}`;
-    axios.delete(itemUrl);
+    return axios.delete(itemUrl);
 };
 
 

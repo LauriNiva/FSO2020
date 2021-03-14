@@ -3,6 +3,8 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import numberService from "./services/numbers";
+import Notification from './components/Notification';
+
 
 
 const App = () => {
@@ -10,6 +12,7 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState("");
     const [nameFilter, setNameFilter] = useState("");
+    const [notificationMessage, setNotificationMessage] = useState(null);
 
     useEffect(() => {
         numberService
@@ -20,9 +23,17 @@ const App = () => {
     }, []);
 
     const deleteItem = (id) => {
-        if (window.confirm(`Do you want to delete ${persons.find(person => person.id === id).name}?`)) {
-            numberService.deleteItem(id);
-            setPersons(persons.filter(person => person.id !== id));
+        const name = persons.find(person => person.id === id).name;
+        if (window.confirm(`Do you want to delete ${name}?`)) {
+            numberService.deleteItem(id)
+                .then(response => {
+                    console.log(response);
+                    showNotification(`Deleted ${name}`, 2000);
+                    setPersons(persons.filter(person => person.id !== id));
+                    setNewName("");
+                    setNewNumber("");
+                });
+
         };
     };
 
@@ -64,20 +75,31 @@ const App = () => {
                 setPersons(persons.concat(newNumber));
                 setNewName("");
                 setNewNumber("");
+                showNotification(`Added ${newNumber.name}`, 2000);
             });
 
+    };
+
+    const showNotification = (message, time) => {
+        setNotificationMessage(message);
+        setTimeout(() => {
+            setNotificationMessage(null);
+        }, time);
     };
 
     const updateNumber = () => {
         const person = persons.find(person => person.name === newName);
         const updatedObject = { ...person, number: newNumber };
         numberService
-        .updateNumber(person.id, updatedObject)
-        .then(response =>{
-            setPersons(persons.map(person => person.id !== updatedObject.id ? person : response))
-        })
+            .updateNumber(person.id, updatedObject)
+            .then(response => {
+                setPersons(persons.map(person =>
+                    person.id !== updatedObject.id ? person : response));
+                showNotification(`Updated number for ${updatedObject.name}`, 2000);
+            }
+            )
 
-    }
+    };
 
     const personsToShow = persons.filter(person =>
         person.name.toLowerCase().includes(nameFilter.toLowerCase())
@@ -87,6 +109,7 @@ const App = () => {
     return (
         <div>
             <h1>Phonebook</h1>
+            <Notification message={notificationMessage} />
             <Filter value={nameFilter} onChangeHandler={handleFilterChange} />
 
             <h2>Add a new</h2>
