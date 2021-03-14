@@ -26,6 +26,7 @@ const App = () => {
         };
     };
 
+
     const handleNameChange = (e) => {
         setNewName(e.target.value);
     };
@@ -42,10 +43,14 @@ const App = () => {
         e.preventDefault();
 
         if (persons.find(person => person.name === newName)) {
-            alert(`${newName} is already in the phonebook`);
-            setNewName("");
-            setNewNumber("");
-            return;
+            if (window.confirm(`${newName} is already in the phonebook. Replace the old number with a new one?`)) {
+                updateNumber();
+                return;
+            } else {
+                setNewName("");
+                setNewNumber("");
+                return;
+            }
         };
 
         const newObject = {
@@ -62,6 +67,17 @@ const App = () => {
             });
 
     };
+
+    const updateNumber = () => {
+        const person = persons.find(person => person.name === newName);
+        const updatedObject = { ...person, number: newNumber };
+        numberService
+        .updateNumber(person.id, updatedObject)
+        .then(response =>{
+            setPersons(persons.map(person => person.id !== updatedObject.id ? person : response))
+        })
+
+    }
 
     const personsToShow = persons.filter(person =>
         person.name.toLowerCase().includes(nameFilter.toLowerCase())
