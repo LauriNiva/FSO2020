@@ -12,7 +12,7 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState("");
     const [nameFilter, setNameFilter] = useState("");
-    const [notificationMessage, setNotificationMessage] = useState(null);
+    const [notificationMessage, setNotificationMessage] = useState([null, false]);
 
     useEffect(() => {
         numberService
@@ -29,6 +29,13 @@ const App = () => {
                 .then(response => {
                     console.log(response);
                     showNotification(`Deleted ${name}`, 2000);
+                    setPersons(persons.filter(person => person.id !== id));
+                    setNewName("");
+                    setNewNumber("");
+                }).catch(error => {
+                    showNotification(
+                        `${name} has already been removed from the server`,
+                        2000, true);
                     setPersons(persons.filter(person => person.id !== id));
                     setNewName("");
                     setNewNumber("");
@@ -80,10 +87,14 @@ const App = () => {
 
     };
 
-    const showNotification = (message, time) => {
-        setNotificationMessage(message);
+    const showNotification = (message, time, error) => {
+        if (error) {
+            setNotificationMessage([message, true]); 
+        } else {
+            setNotificationMessage([message, false]);
+        }
         setTimeout(() => {
-            setNotificationMessage(null);
+            setNotificationMessage([null, false]);
         }, time);
     };
 
@@ -96,8 +107,13 @@ const App = () => {
                 setPersons(persons.map(person =>
                     person.id !== updatedObject.id ? person : response));
                 showNotification(`Updated number for ${updatedObject.name}`, 2000);
-            }
-            )
+            })
+            .catch(error => {
+                showNotification(`Information of ${updatedObject.name} has already been removed from the sever`, 2000, true);
+                setPersons(persons.filter(person => person.id !== updatedObject.id));
+                setNewName("");
+                setNewNumber("");
+            });
 
     };
 
@@ -107,7 +123,7 @@ const App = () => {
 
 
     return (
-        <div>
+        <div className="container">
             <h1>Phonebook</h1>
             <Notification message={notificationMessage} />
             <Filter value={nameFilter} onChangeHandler={handleFilterChange} />

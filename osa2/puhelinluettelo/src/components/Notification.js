@@ -1,7 +1,8 @@
 import React from 'react';
 
 const Notification = ({ message }) => {
-    if (message === null) {
+
+    if (message[0] === null) {
         return(
         <div className="emptymessage">
             
@@ -9,8 +10,14 @@ const Notification = ({ message }) => {
         );
     };
 
+    let id;
+    if(message[1]){
+        id = "error";
+    }else{
+        id ="";
+    }
     return (
-        <div className="message">
+        <div className="message" id={id}>
             {message}
         </div>
     );
