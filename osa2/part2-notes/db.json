@@ -33,7 +33,7 @@
     {
       "content": "This is a new note here too",
       "date": "2021-03-12T17:57:39.843Z",
-      "important": true,
+      "important": false,
       "id": 6
     },
     {
