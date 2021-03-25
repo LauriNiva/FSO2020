@@ -1,0 +1,51 @@
+.container{
+  margin: auto;
+  width: 800px;
+  
+}
+
+h1{
+  text-align: center;
+  font-size: 60px;
+}
+
+.message{
+    color: rgb(70, 122, 63);
+    background: rgb(218, 243, 226);
+    height: 30px;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+ 
+}
+
+.emptymessage{
+    color: rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
+    height: 30px;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#error{
+  color: rgb(250, 6, 6);
+  background: rgb(245, 189, 99);
+}
+
+.deletebutton{
+  color: white;
+  background-color: rgb(216, 58, 58);
+  border-style: none;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.person{
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
