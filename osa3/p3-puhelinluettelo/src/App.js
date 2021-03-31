@@ -83,6 +83,10 @@ const App = () => {
                 setNewName("");
                 setNewNumber("");
                 showNotification(`Added ${newNumber.name}`, 2000);
+            })
+            .catch(error => {
+                console.log(error.response.data.error);
+                showNotification(error.response.data.error, 4000, true)
             });
 
     };
