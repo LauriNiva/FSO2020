@@ -328,3 +328,5 @@ osa3/part3-notes-backend/node_modules/vary/LICENSE
 osa3/part3-notes-backend/node_modules/vary/package.json
 osa3/part3-notes-backend/node_modules/vary/README.md
 /osa3/part3-notes-backend/node_modules
+/osa4/blogilista/node_modules
+/osa4/blogilista/.env
