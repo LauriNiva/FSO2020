@@ -108,3 +108,12 @@ describe('author with most blogs', () => {
     expect(listHelper.mostBlogs(arrayOfMultipleBlogs)).toEqual({author: 'Robert C. Martin', blogs: 3});
   });
 });
+
+describe('author with most likes', () => {
+  test('from list of single blog returs the author', () => {
+    expect(listHelper.mostLikes(arrayOfASingleBlog)).toEqual({author: 'Michael Chan', likes: 7})
+  });
+  test('from list of multiple blogs returs the author', () => {
+    expect(listHelper.mostLikes(arrayOfMultipleBlogs)).toEqual({author: 'Edsger W. Dijkstra', likes: 17})
+  });
+});
