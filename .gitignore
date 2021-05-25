@@ -330,3 +330,5 @@ osa3/part3-notes-backend/node_modules/vary/README.md
 /osa3/part3-notes-backend/node_modules
 /osa4/blogilista/node_modules
 /osa4/blogilista/.env
+.DS_Store
+node_modules
