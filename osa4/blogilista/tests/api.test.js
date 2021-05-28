@@ -22,6 +22,11 @@ test('returns correct ammount of blogs', async () => {
   expect(res.body).toHaveLength(helper.initialBlogs.length);
 });
 
+test('blog identifier is formatted as id', async () => {
+  const res = await api.get('/api/blogs');
+  expect(res.body[0].id).toBeDefined();
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
