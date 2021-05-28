@@ -27,6 +27,26 @@ test('blog identifier is formatted as id', async () => {
   expect(res.body[0].id).toBeDefined();
 });
 
+test('blog is added to database', async () => {
+  const newBlog = {
+    title: "New Blog For New Coders",
+    author: "Makes C. Blogs",
+    url: "http://www.amazingfakeurl.blog",
+    likes: 0
+  };
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const blogsAtTheEnd = await api.get('/api/blogs');
+  expect(blogsAtTheEnd.body).toHaveLength(helper.initialBlogs.length + 1);
+  expect(blogsAtTheEnd.body.map(blog => blog.title)).toContain("New Blog For New Coders");
+
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
