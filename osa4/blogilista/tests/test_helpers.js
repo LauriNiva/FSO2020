@@ -39,4 +39,11 @@ const initialBlogs = [
   }  
 ];
 
-module.exports = { initialBlogs };
+const singleBlog = {
+  title: "New Blog For New Coders",
+  author: "Makes C. Blogs",
+  url: "http://www.amazingfakeurl.blog",
+  likes: 0
+};
+
+module.exports = { initialBlogs, singleBlog };

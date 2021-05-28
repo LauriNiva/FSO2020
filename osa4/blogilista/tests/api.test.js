@@ -28,16 +28,10 @@ test('blog identifier is formatted as id', async () => {
 });
 
 test('blog is added to database', async () => {
-  const newBlog = {
-    title: "New Blog For New Coders",
-    author: "Makes C. Blogs",
-    url: "http://www.amazingfakeurl.blog",
-    likes: 0
-  };
 
   await api
     .post('/api/blogs')
-    .send(newBlog)
+    .send(helper.singleBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
 
@@ -45,6 +39,50 @@ test('blog is added to database', async () => {
   expect(blogsAtTheEnd.body).toHaveLength(helper.initialBlogs.length + 1);
   expect(blogsAtTheEnd.body.map(blog => blog.title)).toContain("New Blog For New Coders");
 
+});
+
+test('blog without likes value gets 0 likes', async () => {
+  const singleBlogWithoutLikes = {
+    title: "New Blog For New Coders",
+    author: "Makes C. Blogs",
+    url: "http://www.amazingfakeurl.blog"
+  };
+
+  await api
+  .post('/api/blogs')
+  .send(singleBlogWithoutLikes)
+  .expect(201)
+  .expect('Content-Type', /application\/json/);
+
+  const singleBlogWithZeroLikes = await Blog.findOne({title: "New Blog For New Coders"});
+  expect(singleBlogWithZeroLikes.likes).toBe(0);
+
+});
+
+test('blog without title returns 400', async () => {
+  const singleBlogWithoutTitle = {
+    author: "Makes C. Blogs",
+    url: "http://www.amazingfakeurl.blog",
+    likes: 4
+  };
+
+  await api
+  .post('/api/blogs')
+  .send(singleBlogWithoutTitle)
+  .expect(400);
+});
+
+test('blog without url returns 400', async () => {
+  const singleBlogWithoutUrl = {
+    title: "New Blog For New Coders",
+    author: "Makes C. Blogs",
+    likes: 4
+  };
+
+  await api
+  .post('/api/blogs')
+  .send(singleBlogWithoutUrl)
+  .expect(400);
 });
 
 afterAll(() => {
