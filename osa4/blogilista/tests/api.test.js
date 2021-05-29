@@ -97,6 +97,21 @@ test('delete with valid id returns 204 and removes the blog', async () => {
   expect(idsAtTheEnd).not.toContainEqual(validBlog._id);
 });
 
+test('updating blog works', async () => {
+  const blogToUpdate = await Blog.findOne({});
+  blogToUpdate.likes = 16;
+  console.log(`blogToUpdate`, blogToUpdate)
+
+  await api
+  .put(`/api/blogs/${blogToUpdate._id}`)
+  .send(blogToUpdate._doc)
+
+  const updatedBlog = await Blog.findById(blogToUpdate._id);
+  console.log(`updatedBlog`, updatedBlog)
+  expect(updatedBlog.likes).toBe(16);
+
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
