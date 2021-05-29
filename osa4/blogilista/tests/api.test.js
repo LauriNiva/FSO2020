@@ -85,6 +85,18 @@ test('blog without url returns 400', async () => {
   .expect(400);
 });
 
+test('delete with valid id returns 204 and removes the blog', async () => {
+  const validBlog = await Blog.findOne({});
+
+  await api
+  .delete(`/api/blogs/${validBlog._id}`)
+  .expect(204);
+
+  const blogsAtTheEnd = await Blog.find({});
+  const idsAtTheEnd = blogsAtTheEnd.map(blog => blog._id);
+  expect(idsAtTheEnd).not.toContainEqual(validBlog._id);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
