@@ -8,7 +8,8 @@ const userSchema = mongoose.Schema({
     unique: true,
     require: true },
   name: { type: String },
-  passwordHash: { type: String, require: true }
+  passwordHash: { type: String, require: true },
+  blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
 });
 
 

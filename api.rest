@@ -11,3 +11,13 @@ GET http://localhost:3001/api/users
 
 ###
 GET http://localhost:3001/api/blogs
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Users React patterns",
+    "author": "Michael Chan",
+    "url": "https://reactpatterns.com/"
+  }
