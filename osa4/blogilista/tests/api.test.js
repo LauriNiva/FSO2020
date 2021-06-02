@@ -3,11 +3,13 @@ const supertest = require('supertest');
 const app = require('../app');
 const api = supertest(app);
 const Blog = require('../models/blog.model');
+const User = require('../models/user.model');
 const helper = require('./test_helpers');
 
 beforeEach(async () => {
   await Blog.deleteMany({});
   await Blog.insertMany(helper.initialBlogs);
+  await User.deleteMany({});
 });
 
 test('blogs are returned as json', async () => {
@@ -109,6 +111,37 @@ test('updating blog works', async () => {
   const updatedBlog = await Blog.findById(blogToUpdate._id);
   console.log(`updatedBlog`, updatedBlog)
   expect(updatedBlog.likes).toBe(16);
+
+});
+
+test('valid user is added', async () => {
+  const usersAtStart = await User.find({});
+
+  const newUser = { username: "Jane", name: "Jane Doe", password: "sikret" };
+
+  await api.post('/api/users')
+    .send(newUser)
+    .expect(200)
+
+  const usersAtEnd = await User.find({});
+
+  expect(usersAtEnd.map(user => user.username)).toContain('Jane');
+  expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
+
+});
+
+test('user with too short password is not added and returns 400', async () => {
+  const usersAtStart = await User.find({});
+
+  const newUser = { username: "John", name: "John Doe", password: "pw" };
+
+  await api.post('/api/users')
+    .send(newUser)
+    .expect(400)
+
+  const usersAtEnd = await User.find({});
+
+  expect(usersAtEnd).toHaveLength(usersAtStart.length);
 
 });
 
