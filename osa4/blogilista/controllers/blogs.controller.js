@@ -1,4 +1,3 @@
-const { request } = require('express');
 const Blog = require('../models/blog.model');
 const blogsRouter = require('express').Router();
 
