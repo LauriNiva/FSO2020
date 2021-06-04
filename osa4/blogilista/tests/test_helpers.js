@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
+
 const initialBlogs = [
   {
     title: "React patterns",
@@ -46,4 +50,13 @@ const singleBlog = {
   likes: 0
 };
 
-module.exports = { initialBlogs, singleBlog };
+const getToken = async () => {
+  const passwordHash = await bcrypt.hash("salasana", 10);
+  const newUserForTest = new User({ username: "John", name: "John Doe", passwordHash });
+  const savedUser = await newUserForTest.save();
+  const token = jwt.sign(savedUser.toJSON(), process.env.SECRET);
+  return token;
+}
+
+
+module.exports = { initialBlogs, singleBlog, getToken };
