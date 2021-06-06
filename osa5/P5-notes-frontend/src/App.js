@@ -27,6 +27,14 @@ const App = (props) => {
             });
     }, []);
 
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON);
+            setUser(user);
+            noteService.setToken(user.token);
+        }
+    }, []);
 
     const toggleImportanceOf = (id) => {
         const note = notes.find(n => n.id === id);
@@ -64,7 +72,6 @@ const App = (props) => {
     };
 
     const handleNoteChange = (e) => {
-        console.log(e.target.value);
         setNewNote(e.target.value);
     };
 
@@ -75,6 +82,11 @@ const App = (props) => {
             const user = await loginService.login({
                 username, password
             });
+
+            window.localStorage.setItem(
+                'loggedNoteappUser', JSON.stringify(user)
+            );
+            noteService.setToken(user.token);
             setUser(user);
             setUsername('');
             setPassword('');
@@ -85,6 +97,14 @@ const App = (props) => {
             }, 5000);
         }
     }
+
+    const handleLogout = () => {
+        window.localStorage.setItem(
+            'loggedNoteappUser', ''
+        );
+        noteService.setToken(null);
+        setUser(null);
+    };
     
     const notesToShow = showAll ? notes : notes.filter(note => note.important);
     
@@ -98,6 +118,7 @@ const App = (props) => {
                 ?<Loginform handleLogin={handleLogin} username={username} password={password} setUsername={setUsername} setPassword={setPassword} />
                 :<div>
                     <p>{user.name} logged in</p>
+                    <button onClick={handleLogout}>logout</button>
                     {<Noteform addNote={addNote} newNote={newNote} handleNoteChange={handleNoteChange} />}
                 </div>
             }
