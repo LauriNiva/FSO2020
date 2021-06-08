@@ -12,7 +12,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
   const user = request.user;
-
+  console.log(`user`, user)
   const blog = new Blog(request.body);
   if (!blog.likes) blog.likes = 0;
 
