@@ -17,8 +17,7 @@ const App = (props) => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+   
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -66,9 +65,8 @@ const App = (props) => {
     };
 
     
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
+    const handleLogin = async (username, password) => {
+        
         try {
             const user = await loginService.login({
                 username, password
@@ -79,15 +77,13 @@ const App = (props) => {
             );
             noteService.setToken(user.token);
             setUser(user);
-            setUsername('');
-            setPassword('');
         } catch {
             setErrorMessage('wrong credentials');
             setTimeout(() => {
                 setErrorMessage(null)
             }, 5000);
         }
-    }
+    };
 
     const handleLogout = () => {
         window.localStorage.setItem(
@@ -109,8 +105,7 @@ const App = (props) => {
             {user === null
                 ? <div>
                     <Togglable buttonLabel='Log in'>
-                        <Loginform handleLogin={handleLogin} username={username} password={password}
-                            setUsername={setUsername} setPassword={setPassword} />
+                        <Loginform loginUser={handleLogin} />
                     </Togglable>
                 </div>
                 : <div>
