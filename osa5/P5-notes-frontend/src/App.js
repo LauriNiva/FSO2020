@@ -17,8 +17,6 @@ const App = (props) => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
-    const [newNote, setNewNote] = useState("a new note...");
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
@@ -59,26 +57,15 @@ const App = (props) => {
             });
     };
 
-    const addNote = (e) => {
-        e.preventDefault();
-        const noteObject = {
-            content: newNote,
-            date: new Date().toISOString(),
-            important: Math.random() > 0.5,
-        };
-
+    const addNote = (noteObject) => {
         noteService
             .create(noteObject)
             .then(returnedNote => {
                 setNotes(notes.concat(returnedNote));
-                setNewNote("");
             });
     };
 
-    const handleNoteChange = (e) => {
-        setNewNote(e.target.value);
-    };
-
+    
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -130,7 +117,7 @@ const App = (props) => {
                     <p>{user.name} logged in</p>
                     <button onClick={handleLogout}>Logout</button>
                     <Togglable buttonLabel='New note'>
-                        <Noteform addNote={addNote} newNote={newNote} handleNoteChange={handleNoteChange} />
+                        <Noteform createNote={addNote} />
                     </Togglable>
                 </div>
             }
