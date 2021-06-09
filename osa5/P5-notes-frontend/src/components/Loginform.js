@@ -3,9 +3,10 @@ import React from 'react';
 const Loginform = ({ handleLogin, username, setUsername, password, setPassword }) => {
   return (
     <div>
+      <h2>Login</h2>
       <form onSubmit={handleLogin}>
                 <div>
-                    username
+                    Username
                     <input
                     type="text"
                     value={username}
@@ -14,7 +15,7 @@ const Loginform = ({ handleLogin, username, setUsername, password, setPassword }
                     />
                 </div>
                 <div>
-                    password
+                    Password
                     <input
                     type="password"
                     value={password}
@@ -22,7 +23,7 @@ const Loginform = ({ handleLogin, username, setUsername, password, setPassword }
                     onChange={({ target }) => setPassword(target.value)}
                     />
                 </div>
-                <button type="submit">login</button>
+                <button type="submit">Login</button>
             </form>
     </div>
   )

@@ -6,15 +6,19 @@ import Notification from "./components/Notification";
 import Footer from './components/Footer';
 import Noteform from './components/Noteform';
 import Loginform from "./components/Loginform";
+import Togglable from "./components/Togglable";
 
 
 
 const App = (props) => {
 
     const [notes, setNotes] = useState([]);
-    const [newNote, setNewNote] = useState("a new note...");
     const [showAll, setShowAll] = useState(true);
+
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const [newNote, setNewNote] = useState("a new note...");
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
@@ -105,24 +109,32 @@ const App = (props) => {
         noteService.setToken(null);
         setUser(null);
     };
-    
+
     const notesToShow = showAll ? notes : notes.filter(note => note.important);
-    
+
+
     return (
         <div>
             <h1>Notes</h1>
 
             <Notification message={errorMessage} />
 
-            {user === null  
-                ?<Loginform handleLogin={handleLogin} username={username} password={password} setUsername={setUsername} setPassword={setPassword} />
-                :<div>
+            {user === null
+                ? <div>
+                    <Togglable buttonLabel='Log in'>
+                        <Loginform handleLogin={handleLogin} username={username} password={password}
+                            setUsername={setUsername} setPassword={setPassword} />
+                    </Togglable>
+                </div>
+                : <div>
                     <p>{user.name} logged in</p>
-                    <button onClick={handleLogout}>logout</button>
-                    {<Noteform addNote={addNote} newNote={newNote} handleNoteChange={handleNoteChange} />}
+                    <button onClick={handleLogout}>Logout</button>
+                    <Togglable buttonLabel='New note'>
+                        <Noteform addNote={addNote} newNote={newNote} handleNoteChange={handleNoteChange} />
+                    </Togglable>
                 </div>
             }
-                      
+
             <div>
                 <button onClick={() => setShowAll(!showAll)}>
                     show {showAll ? "important" : "all"}
@@ -137,7 +149,7 @@ const App = (props) => {
                     />
                 )}
             </ul>
-            
+
             <Footer />
         </div>
     );
