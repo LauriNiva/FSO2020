@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Blog from './components/Blog';
 import Loginform from './components/Loginform';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login.service';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  
+
   const [blogTitle, setBlogTitle] = useState('');
   const [blogAuthor, setBlogAuthor] = useState('');
   const [blogUrl, setBlogUrl] = useState('');
-  
-  const[notificationMessage, setNotificationMessage] = useState(null);
+
+  const [notificationMessage, setNotificationMessage] = useState(null);
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -37,11 +40,11 @@ const App = () => {
 
   const notificationService = (notification) => {
     setNotificationMessage(notification);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 3000); 
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 3000);
   };
-  
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,6 +73,7 @@ const App = () => {
     try {
       const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl }
       const savedBlog = await blogService.create(newBlog);
+      blogFormRef.current.toggleVisibility();
       setBlogs(blogs.concat(savedBlog));
       notificationService(`New blog added: ${savedBlog.title}`);
       setBlogTitle('');
@@ -80,15 +84,17 @@ const App = () => {
     }
 
   }
-  
+
 
 
   const blogList = () => {
     return (
       <div>
         <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-        <NewBlogForm  handleNewBlog={handleNewBlog} blogTitle={blogTitle} setBlogTitle={setBlogTitle}
-        blogAuthor={blogAuthor} setBlogAuthor={setBlogAuthor} blogUrl={blogUrl} setBlogUrl={setBlogUrl} />
+        <Togglable buttonLabel="Create" ref={blogFormRef}>
+          <NewBlogForm handleNewBlog={handleNewBlog} blogTitle={blogTitle} setBlogTitle={setBlogTitle}
+            blogAuthor={blogAuthor} setBlogAuthor={setBlogAuthor} blogUrl={blogUrl} setBlogUrl={setBlogUrl} />
+        </Togglable>
         <div>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
@@ -105,7 +111,7 @@ const App = () => {
         <h1>Blog. list</h1>
         <Notification message={notificationMessage} />
       </div>
-      
+
       { !user
         ? <Loginform handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
         : blogList()
