@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -14,7 +14,13 @@ const Blog = ({ blog }) => {
 
   const toggleView = () => {
     setShowFullInfo(!showFullInfo);
-  }
+  };
+
+  const likeBlog = () => {
+    const updatedBlog = blog;
+    updatedBlog.likes++;
+    updateBlog(updatedBlog);
+  };
   
 
   return (
@@ -26,7 +32,7 @@ const Blog = ({ blog }) => {
       {showFullInfo 
       ? <div>
         <div>{blog.url}</div>
-        <div>Likes: {blog.likes}<button>Like</button></div>
+        <div>Likes: {blog.likes}<button onClick={likeBlog}>Like</button></div>
         <div>{blog.user.name}</div>
         </div>
       : ''
