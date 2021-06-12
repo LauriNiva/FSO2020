@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 const Noteform = ({ createNote }) => {
 
@@ -16,7 +16,7 @@ const Noteform = ({ createNote }) => {
       important: Math.random() > 0.5,
     });
 
-    setNewNote("");
+    setNewNote('');
   };
 
   return (
@@ -28,7 +28,7 @@ const Noteform = ({ createNote }) => {
       </form>
 
     </div>
-  )
-}
+  );
+};
 
 export default Noteform;

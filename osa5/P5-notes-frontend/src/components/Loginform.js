@@ -6,38 +6,38 @@ const Loginform = ({ loginUser }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-      loginUser(username, password);
-      setUsername('');
-      setPassword('');
+
+    loginUser(username, password);
+    setUsername('');
+    setPassword('');
   };
 
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-                <div>
+        <div>
                     Username
-                    <input
-                    type="text"
-                    value={username}
-                    name="Username"
-                    onChange={({ target }) => setUsername(target.value)}
-                    />
-                </div>
-                <div>
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
                     Password
-                    <input
-                    type="password"
-                    value={password}
-                    name="Password"
-                    onChange={({ target }) => setPassword(target.value)}
-                    />
-                </div>
-                <button type="submit">Login</button>
-            </form>
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
 export default  Loginform;
