@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 
 const Blog = ({ blog, updateBlog, user, removeBlog }) => {
@@ -10,7 +10,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
     marginBottom: 5
   };
 
-  
+
 
   const [showFullInfo, setShowFullInfo] = useState(false);
 
@@ -25,20 +25,20 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   };
 
   const fullInfo = () => {
-    const removeButtonStyle = { 
+    const removeButtonStyle = {
       color: 'white',
       background: 'darkred',
       borderRadius: '5px',
-    }
+    };
     return (
       <div>
         <div>{blog.url}</div>
         <div>Likes: {blog.likes}<button onClick={likeBlog}>Like</button></div>
         <div>{blog.user.name}</div>
-        {(blog.user.username === user.username) && 
+        {(blog.user.username === user.username) &&
         <button style={removeButtonStyle} onClick={() => removeBlog(blog)}>Remove</button>}
       </div>
-    )
+    );
   };
 
 
@@ -53,7 +53,7 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
         : ''
       }
     </div>
-  )
+  );
 };
 
-export default Blog
+export default Blog;

@@ -9,7 +9,7 @@ import blogService from './services/blogs';
 import loginService from './services/login.service';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState([]);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +24,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )
+    );
   }, []);
 
 
@@ -67,7 +67,7 @@ const App = () => {
     setUser(null);
     blogService.setToken(null);
     window.localStorage.removeItem('loggedUser');
-  }
+  };
 
   const createNewBlog = async (newBlog) => {
     try {
@@ -100,13 +100,13 @@ const App = () => {
       }
     }
   };
-  
+
 
   const compareLikes = (a, b) => {
     if (a.likes > b.likes) return -1;
     if (a.likes < b.likes) return 1;
     return 0;
-  }
+  };
 
 
   const blogList = () => {
@@ -122,8 +122,8 @@ const App = () => {
           )}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
 
   return (
@@ -140,7 +140,7 @@ const App = () => {
 
 
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
