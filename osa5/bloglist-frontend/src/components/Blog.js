@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, user, removeBlog }) => {
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: '1px solid',
     marginBottom: 5
-  }
+  };
+
+  
 
   const [showFullInfo, setShowFullInfo] = useState(false);
 
@@ -21,7 +23,24 @@ const Blog = ({ blog, updateBlog }) => {
     updatedBlog.likes++;
     updateBlog(updatedBlog);
   };
-  
+
+  const fullInfo = () => {
+    const removeButtonStyle = { 
+      color: 'white',
+      background: 'darkred',
+      borderRadius: '5px',
+    }
+    return (
+      <div>
+        <div>{blog.url}</div>
+        <div>Likes: {blog.likes}<button onClick={likeBlog}>Like</button></div>
+        <div>{blog.user.name}</div>
+        {(blog.user.username === user.username) && 
+        <button style={removeButtonStyle} onClick={() => removeBlog(blog)}>Remove</button>}
+      </div>
+    )
+  };
+
 
   return (
     <div style={blogStyle}>
@@ -29,13 +48,9 @@ const Blog = ({ blog, updateBlog }) => {
       <button onClick={toggleView}>
         {showFullInfo ? 'Hide' : 'View'}
       </button>
-      {showFullInfo 
-      ? <div>
-        <div>{blog.url}</div>
-        <div>Likes: {blog.likes}<button onClick={likeBlog}>Like</button></div>
-        <div>{blog.user.name}</div>
-        </div>
-      : ''
+      {showFullInfo
+        ? fullInfo()
+        : ''
       }
     </div>
   )

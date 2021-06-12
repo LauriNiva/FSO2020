@@ -80,14 +80,27 @@ const App = () => {
     }
   };
 
-  const updateBlog = async (blog) => {
+  const updateBlog = async (blogToUpdate) => {
     try {
-      const updatedBlog = await blogService.update(blog);
-      setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog));
+      const updatedBlog = await blogService.update(blogToUpdate);
+      setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : blogToUpdate));
     } catch (error) {
       notificationService('Error: Could not update the blog!');
     }
   };
+
+  const removeBlog = async (blogToDelete) => {
+    if(window.confirm(`Remove blog ${blogToDelete.title}?`)){
+      try {
+        await blogService.remove(blogToDelete);
+        notificationService(`Blog ${blogToDelete.title} deleted!`);
+        setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id));
+      } catch (error) {
+        notificationService('Error: Could not delete the blog!');
+      }
+    }
+  };
+  
 
   const compareLikes = (a, b) => {
     if (a.likes > b.likes) return -1;
@@ -105,7 +118,7 @@ const App = () => {
         </Togglable>
         <div>
           {blogs.sort(compareLikes).map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} user={user} removeBlog={removeBlog} />
           )}
         </div>
       </div>
