@@ -27,6 +27,9 @@ const App = () => {
     )
   }, []);
 
+
+
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
     if (loggedUserJSON) {
@@ -86,6 +89,11 @@ const App = () => {
     }
   };
 
+  const compareLikes = (a, b) => {
+    if (a.likes > b.likes) return -1;
+    if (a.likes < b.likes) return 1;
+    return 0;
+  }
 
 
   const blogList = () => {
@@ -96,7 +104,7 @@ const App = () => {
           <NewBlogForm handleNewBlog={createNewBlog} />
         </Togglable>
         <div>
-          {blogs.map(blog =>
+          {blogs.sort(compareLikes).map(blog =>
             <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
           )}
         </div>
