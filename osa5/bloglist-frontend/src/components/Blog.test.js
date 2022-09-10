@@ -7,12 +7,14 @@ import Blog from './Blog';
 
 describe('<Blog />', () => {
 
+  let updateBlog = jest.fn();
 
   beforeEach(() => {
     const testUser = { name: 'Testname' };
     const testBlog = { title: 'Test Blog', author: 'Test Author', url: 'testurl.com', likes: 3, user: testUser };
 
-    render(<Blog blog={testBlog} user={testUser} />);
+
+    render(<Blog blog={testBlog} user={testUser} updateBlog={updateBlog} />);
 
   });
 
@@ -41,6 +43,22 @@ describe('<Blog />', () => {
     screen.getByText('testurl.com');
     const likes = screen.queryByText('Likes: ', { exact: false });
     expect(likes).not.toBeNull();
+  });
+
+  test('Pressing like button triggers the eventlistener correctly', async () => {
+    const user = userEvent.setup();
+    const viewButton = screen.getByText('View');
+
+    await user.click(viewButton);
+
+    const likeButton = screen.getByText('Like');
+    await user.click(likeButton);
+    await user.click(likeButton);
+
+    expect(updateBlog.mock.calls).toHaveLength(2);
+
+
+
   });
 
 });
