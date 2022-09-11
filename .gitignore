@@ -333,3 +333,4 @@ osa3/part3-notes-backend/node_modules/vary/README.md
 .DS_Store
 node_modules
 osa5/bloglist-frontend/.eslintcache
+osa5/P5-notes-frontend/cypress/videos
