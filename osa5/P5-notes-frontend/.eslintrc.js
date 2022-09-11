@@ -18,6 +18,9 @@ module.exports = {
   "plugins": [
       "react", "jest"
   ],
+  "globals": {
+    "cy": true
+  },
   "rules": {
       "indent": [
           "error",
