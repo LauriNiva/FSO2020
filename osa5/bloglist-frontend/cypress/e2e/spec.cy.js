@@ -62,21 +62,21 @@ describe('Blogg app', function () {
     });
 
     it('A blog can be liked', function () {
-      cy.request(
-        {
-          method: 'POST',
-          url: 'http://localhost:3001/api/blogs',
-          body :{ title: 'Test Blog', author: 'Tester Doe', url: 'testblog.com' },
-          headers: {
-            'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
-          }
-        }
-      );
-      cy.visit('http://localhost:3000');
+      cy.createBlog();
 
       cy.contains('View').click();
       cy.contains('Like').click();
       cy.contains('Likes: 1');
+
+    });
+
+    it('Own blog can be deleted', function() {
+      cy.createBlog();
+      cy.contains('View').click();
+      cy.contains('Remove').click();
+
+      cy.get('.notification-message')
+        .should('contain', 'Blog Test Blog deleted!');
 
     });
   });
