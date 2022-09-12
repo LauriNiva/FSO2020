@@ -79,6 +79,26 @@ describe('Blogg app', function () {
         .should('contain', 'Blog Test Blog deleted!');
 
     });
+
+    it('Not own blog cant be deleted', function() {
+      cy.request('POST', 'http://localhost:3001/api/users',
+        {
+          name: 'John Doe',
+          username: 'john',
+          password: 'salasana2'
+        });
+      cy.createBlog();
+      cy.contains('logout').click();
+
+      cy.get('input[name="Username"]').type('john');
+      cy.get('input[name="Password"]').type('salasana2');
+      cy.get('button').contains('login').click();
+
+      cy.contains('View').click();
+      cy.get('button').contains('Remove').should('not.exist');
+
+    });
+
   });
 
 });
