@@ -38,15 +38,7 @@ describe('Blogg app', function () {
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.request('POST', 'http://localhost:3001/api/login',
-        {
-          username: 'niva',
-          password: 'salasana'
-        }
-      ).then(({ body }) => {
-        window.localStorage.setItem('loggedUser', JSON.stringify(body));
-        cy.visit('http://localhost:3000');
-      });
+      cy.loginAUser();
     });
 
     it('A blog can be created', function () {
@@ -62,7 +54,7 @@ describe('Blogg app', function () {
     });
 
     it('A blog can be liked', function () {
-      cy.createBlog();
+      cy.createBlog({ title: 'Test Blog', author: 'Tester Doe', url: 'testblog.com' });
 
       cy.contains('View').click();
       cy.contains('Like').click();
@@ -71,7 +63,8 @@ describe('Blogg app', function () {
     });
 
     it('Own blog can be deleted', function() {
-      cy.createBlog();
+      cy.createBlog({ title: 'Test Blog', author: 'Tester Doe', url: 'testblog.com' });
+
       cy.contains('View').click();
       cy.contains('Remove').click();
 
@@ -87,7 +80,7 @@ describe('Blogg app', function () {
           username: 'john',
           password: 'salasana2'
         });
-      cy.createBlog();
+      cy.createBlog({ title: 'Test Blog', author: 'Tester Doe', url: 'testblog.com' });
       cy.contains('logout').click();
 
       cy.get('input[name="Username"]').type('john');
@@ -98,6 +91,24 @@ describe('Blogg app', function () {
       cy.get('button').contains('Remove').should('not.exist');
 
     });
+  });
+
+  it.only('Blogs sort correctly with likes', function() {
+    cy.loginAUser();
+
+    cy.createBlog({ title: 'Test Blog with second most likes', author: 'Tester Doe', url: 'testblog.com' });
+    cy.createBlog({ title: 'Test Blog with most likes', author: 'Tester Doe', url: 'testblog.com' });
+    cy.createBlog({ title: 'Test Blog 3', author: 'Tester Doe', url: 'testblog.com' });
+
+    cy.get('.blog').contains('Test Blog with most likes').parent().contains('View').click()
+      .parent().contains('Like').click();
+    cy.get('.blog').contains('Test Blog with second most likes').parent().contains('View').click()
+      .parent().contains('Like').click();
+    cy.get('.blog').contains('Test Blog with most likes').parent().contains('Like').click();
+
+    cy.get('.blog').eq(0).should('contain', 'Test Blog with most likes');
+    cy.get('.blog').eq(1).should('contain', 'Test Blog with second most likes');
+
 
   });
 
