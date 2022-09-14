@@ -23,10 +23,17 @@ const App = () => {
     })
   };
 
+  const sortAnecdotes = (a,b) => {
+    if(a.votes > b.votes) return -1;
+    if(a.votes < b.votes) return 1;
+    return 0;
+    
+  }
+
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.sort(sortAnecdotes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
