@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
+import { showNotification } from '../reducers/notificationReducer';
 
 function AnecdoteList() {
 
@@ -14,9 +15,11 @@ function AnecdoteList() {
     return 0;
   };
 
-  const vote = (id) => {
-    console.log('vote', id);
-    dispatch(voteAnecdote(id));
+  const vote = (anecdote) => {
+    console.log('vote', anecdote.id);
+    dispatch(voteAnecdote(anecdote.id));
+    dispatch(showNotification(`You voted: "${anecdote.content}"`));
+    setTimeout(()=> dispatch(showNotification('')), 5000)
   };
 
   return (
@@ -28,7 +31,7 @@ function AnecdoteList() {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
