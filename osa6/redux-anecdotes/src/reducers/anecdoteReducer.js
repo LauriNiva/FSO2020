@@ -23,6 +23,13 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
+  
+  if(action.type === 'LIKE') {
+    const id = action.data.id;
+
+    return state.map( a => a.id !== id ? a : { ...a, votes: a.votes + 1 } )
+  }
+
   return state
 }
 
