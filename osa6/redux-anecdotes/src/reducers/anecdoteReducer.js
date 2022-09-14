@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,40 +19,58 @@ const asObject = (anecdote) => {
   }
 }
 
-export const createAnecdote = (anecdote) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: { anecdote }
+const initialState = anecdotesAtStart.map(asObject);
+
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    createAnecdote: (state, action) => {
+      const newAnecdote = action.payload;
+      state.push(asObject(newAnecdote))
+    },
+    voteAnecdote: (state, action) => {
+      const id = action.payload;
+      const anecdoteToVote = state.find(a => a.id === id);
+      anecdoteToVote.votes++;
+    }
   }
-}
+});
 
-export const voteAnecdote = (id) => {
-  return {
-    type: 'LIKE',
-    data: { id }
-  }
-}
+export const { createAnecdote, voteAnecdote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
 
-const initialState = anecdotesAtStart.map(asObject)
+// export const createAnecdote = (anecdote) => {
+//   return {
+//     type: 'NEW_ANECDOTE',
+//     data: { anecdote }
+//   }
+// }
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
+// export const voteAnecdote = (id) => {
+//   return {
+//     type: 'LIKE',
+//     data: { id }
+//   }
+// }
 
 
-  if (action.type === 'LIKE') {
-    const id = action.data.id;
+// const reducer = (state = initialState, action) => {
+//   console.log('state now: ', state)
+//   console.log('action', action)
 
-    return state.map(a => a.id !== id ? a : { ...a, votes: a.votes + 1 })
-  }
 
-  if (action.type === 'NEW_ANECDOTE') {
-    const anecdote = action.data.anecdote;
+//   if (action.type === 'LIKE') {
+//     const id = action.data.id;
 
-    return state.concat(asObject(anecdote));
-  }
+//     return state.map(a => a.id !== id ? a : { ...a, votes: a.votes + 1 })
+//   }
 
-  return state
-}
+//   if (action.type === 'NEW_ANECDOTE') {
+//     const anecdote = action.data.anecdote;
 
-export default reducer
+//     return state.concat(asObject(anecdote));
+//   }
+
+//   return state
+// }

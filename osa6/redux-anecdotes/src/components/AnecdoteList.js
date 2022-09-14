@@ -4,10 +4,9 @@ import { voteAnecdote } from '../reducers/anecdoteReducer';
 
 function AnecdoteList() {
 
-  const anecdotes = useSelector(state => state);
+  const anecdotes = useSelector(state => state.anecdotes.slice()); //.slice() luo kopion arraysta, jotta sitä voi muokata(.sort)
 
   const dispatch = useDispatch();
-
 
   const sortAnecdotes = (a,b) => {
     if(a.votes > b.votes) return -1;
