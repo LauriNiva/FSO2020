@@ -34,6 +34,11 @@
       "content": "new anecdote with fake server",
       "votes": 0,
       "id": "tUXsPax"
+    },
+    {
+      "content": "With redux-thunk",
+      "votes": 0,
+      "id": "V6XWaW5"
     }
   ]
 }
