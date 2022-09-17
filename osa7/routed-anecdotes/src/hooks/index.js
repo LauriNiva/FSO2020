@@ -14,8 +14,12 @@ const useField = (type) => {
   return {
     type,
     value,
-    onChange,
-    reset
+    onChange
+    ,
+    func: {
+      reset
+
+    }
   }
 
 };

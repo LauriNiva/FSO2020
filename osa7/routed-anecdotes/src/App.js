@@ -76,9 +76,9 @@ const CreateNew = (props) => {
   }
 
   const clearForm = () => {
-    content.reset();
-    author.reset();
-    info.reset();
+    content.func.reset();
+    author.func.reset();
+    info.func.reset();
   }
 
   return (
