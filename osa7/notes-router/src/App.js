@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 const Home = () => (
   <div> <h2>TKTL notes app</h2></div>
@@ -18,22 +18,25 @@ function App() {
   }
 
   return (
-    <Router>
-      <div>
-        <Link style={padding} to="/">home</Link>
-        <Link style={padding} to="/notes">notes</Link>
-        <Link style={padding} to="/users">users</Link>
-      </div>
+    <div className='container'>
 
-      <Routes>
-        <Route path="/notes" element={<Notes />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <div>
-        <i>Note app, 2022</i>
-      </div>
-    </Router>
+      <Router>
+        <div>
+          <Link style={padding} to="/">home</Link>
+          <Link style={padding} to="/notes">notes</Link>
+          <Link style={padding} to="/users">users</Link>
+        </div>
+
+        <Routes>
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <div>
+          <i>Note app, 2022</i>
+        </div>
+      </Router>
+    </div>
   );
 }
 
