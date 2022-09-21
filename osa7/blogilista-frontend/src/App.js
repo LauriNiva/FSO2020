@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import Blog from './components/Blog';
 import Loginform from './components/Loginform';
@@ -7,15 +8,18 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login.service';
+import { setNotification } from './reducers/notificationReducer';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const [blogs, setBlogs] = useState([]);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  const [notificationMessage, setNotificationMessage] = useState(null);
+  const notificationMessage = useSelector((state) => state.notifications.message);
 
   const blogFormRef = useRef();
 
@@ -33,10 +37,7 @@ const App = () => {
   }, []);
 
   const notificationService = (notification) => {
-    setNotificationMessage(notification);
-    setTimeout(() => {
-      setNotificationMessage(null);
-    }, 3000);
+    dispatch(setNotification(notification, 3));
   };
 
   const handleLogin = async (e) => {
