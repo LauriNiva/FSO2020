@@ -8,7 +8,7 @@ test('New blog is created', async () => {
   // luo fn() handleNewBlog
   const handleNewBlog = jest.fn();
   // renderöi NewBlogForm
-  const { container } = render(<NewBlogForm handleNewBlog={ handleNewBlog } />);
+  const { container } = render(<NewBlogForm handleNewBlog={handleNewBlog} />);
   // etsi kentät
   const titleField = container.querySelector('input[name="title"]');
   //author
@@ -36,5 +36,4 @@ test('New blog is created', async () => {
   expect(handleNewBlog.mock.calls[0][0].title).toBe('Test Title');
   expect(handleNewBlog.mock.calls[0][0].author).toBe('Test Author');
   expect(handleNewBlog.mock.calls[0][0].url).toBe('testurl.com');
-
 });

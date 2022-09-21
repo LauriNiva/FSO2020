@@ -1,16 +1,16 @@
 .top-container {
- display: grid;
- grid-template-columns: auto auto;
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
-.notification{
+.notification {
   font-size: 20px;
   font-weight: bold;
   padding-top: 20px;
 }
 
 .notification-message {
-  color: rgb(92, 184, 1)
+  color: rgb(92, 184, 1);
 }
 
 .notification-error {

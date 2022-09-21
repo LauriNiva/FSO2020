@@ -4,22 +4,21 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Blog from './Blog';
 
-
 describe('<Blog />', () => {
-
   let updateBlog = jest.fn();
 
   beforeEach(() => {
     const testUser = { name: 'Testname' };
-    const testBlog = { title: 'Test Blog', author: 'Test Author', url: 'testurl.com', likes: 3, user: testUser };
-
+    const testBlog = {
+      title: 'Test Blog',
+      author: 'Test Author',
+      url: 'testurl.com',
+      likes: 3,
+      user: testUser,
+    };
 
     render(<Blog blog={testBlog} user={testUser} updateBlog={updateBlog} />);
-
   });
-
-
-
 
   test('Blog renders title and author, but not url and likes', async () => {
     screen.getByText('Test Blog');
@@ -29,11 +28,9 @@ describe('<Blog />', () => {
     expect(url).toBeNull();
     const likesContainer = screen.queryByText('Likes: ', { exact: false });
     expect(likesContainer).toBeNull();
-
   });
 
   test('Blog renders url and likes after the View-button is pressed', async () => {
-
     const user = userEvent.setup();
 
     const button = screen.getByText('View');
@@ -56,9 +53,5 @@ describe('<Blog />', () => {
     await user.click(likeButton);
 
     expect(updateBlog.mock.calls).toHaveLength(2);
-
-
-
   });
-
 });

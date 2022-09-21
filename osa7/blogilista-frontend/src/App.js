@@ -15,20 +15,13 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-
-
   const [notificationMessage, setNotificationMessage] = useState(null);
 
   const blogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    );
+    blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
-
-
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
@@ -46,13 +39,10 @@ const App = () => {
     }, 3000);
   };
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const user = await loginService.loginUser(
-        { username, password }
-      );
+      const user = await loginService.loginUser({ username, password });
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
       setUser(user);
       blogService.setToken(user.token);
@@ -83,24 +73,25 @@ const App = () => {
   const updateBlog = async (blogToUpdate) => {
     try {
       const updatedBlog = await blogService.update(blogToUpdate);
-      setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : blogToUpdate));
+      setBlogs(
+        blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : blogToUpdate))
+      );
     } catch (error) {
       notificationService('Error: Could not update the blog!');
     }
   };
 
   const removeBlog = async (blogToDelete) => {
-    if(window.confirm(`Remove blog ${blogToDelete.title}?`)){
+    if (window.confirm(`Remove blog ${blogToDelete.title}?`)) {
       try {
         await blogService.remove(blogToDelete);
         notificationService(`Blog ${blogToDelete.title} deleted!`);
-        setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id));
+        setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id));
       } catch (error) {
         notificationService('Error: Could not delete the blog!');
       }
     }
   };
-
 
   const compareLikes = (a, b) => {
     if (a.likes > b.likes) return -1;
@@ -108,23 +99,29 @@ const App = () => {
     return 0;
   };
 
-
   const blogList = () => {
     return (
       <div>
-        <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
+        <p>
+          {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </p>
         <Togglable buttonLabel="Create" ref={blogFormRef}>
           <NewBlogForm handleNewBlog={createNewBlog} />
         </Togglable>
         <div>
-          {blogs.sort(compareLikes).map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} user={user} removeBlog={removeBlog} />
-          )}
+          {blogs.sort(compareLikes).map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateBlog={updateBlog}
+              user={user}
+              removeBlog={removeBlog}
+            />
+          ))}
         </div>
       </div>
     );
   };
-
 
   return (
     <div>
@@ -133,12 +130,17 @@ const App = () => {
         <Notification message={notificationMessage} />
       </div>
 
-      { !user
-        ? <Loginform handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
-        : blogList()
-      }
-
-
+      {!user ? (
+        <Loginform
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
+      ) : (
+        blogList()
+      )}
     </div>
   );
 };
