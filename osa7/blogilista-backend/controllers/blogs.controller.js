@@ -12,7 +12,6 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
   const user = request.user;
-  console.log(`user`, user)
   const blog = new Blog(request.body);
   if (!blog.likes) blog.likes = 0;
 
@@ -20,8 +19,11 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
   const savedBlog = await blog.save();
 
+
   user.blogs = user.blogs.concat(savedBlog);
   await user.save();
+
+  await savedBlog.populate('user', { username: 1, name: 1, _id: 1 });
 
   response
     .status(201)
@@ -52,7 +54,9 @@ blogsRouter.put('/:id', async (request, response) =>{
     likes: body.likes
   };
   
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new:true });
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+  }).populate('user', { username: 1, name: 1, _id: 1 });;
   response.json(updatedBlog);
 
 });
