@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { deleteABlog, likeABlog } from '../reducers/blogReducer';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '../reducers/notificationReducer';
 
-const Blog = ({ blog, updateBlog, user, removeBlog }) => {
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch();
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,9 +20,19 @@ const Blog = ({ blog, updateBlog, user, removeBlog }) => {
   };
 
   const likeBlog = () => {
-    const updatedBlog = blog;
-    updatedBlog.likes++;
-    updateBlog(updatedBlog);
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    dispatch(likeABlog(updatedBlog));
+  };
+
+  const removeBlog = () => {
+    if (window.confirm(`Remove blog ${blog.title}?`)) {
+      try {
+        dispatch(deleteABlog(blog));
+        dispatch(setNotification(`Blog ${blog.title} deleted!`, 3));
+      } catch (error) {
+        dispatch(setNotification('Error: Could not delete the blog!'));
+      }
+    }
   };
 
   const fullInfo = () => {

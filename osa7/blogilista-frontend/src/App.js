@@ -9,11 +9,17 @@ import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login.service';
 import { setNotification } from './reducers/notificationReducer';
+import { setInitialBlogs, createANewBlog } from './reducers/blogReducer';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector(state => state.blogs.slice());
+  console.log('blogs', blogs);
+
+  useEffect(() => {
+    dispatch(setInitialBlogs());
+  }, []);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,9 +29,7 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser');
@@ -62,10 +66,9 @@ const App = () => {
 
   const createNewBlog = async (newBlog) => {
     try {
-      const savedBlog = await blogService.create(newBlog);
+      dispatch(createANewBlog(newBlog));
       blogFormRef.current.toggleVisibility();
-      setBlogs(blogs.concat(savedBlog));
-      notificationService(`New blog added: ${savedBlog.title}`);
+      notificationService(`New blog added: ${newBlog.title}`);
     } catch (error) {
       notificationService('Error: Could not create a new blog!');
     }
@@ -73,26 +76,16 @@ const App = () => {
 
   const updateBlog = async (blogToUpdate) => {
     try {
-      const updatedBlog = await blogService.update(blogToUpdate);
-      setBlogs(
-        blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : blogToUpdate))
-      );
+      console.log(blogToUpdate);
+      // const updatedBlog = await blogService.update(blogToUpdate);
+      // setBlogs(
+      //   blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : blogToUpdate))
+      // );
     } catch (error) {
       notificationService('Error: Could not update the blog!');
     }
   };
 
-  const removeBlog = async (blogToDelete) => {
-    if (window.confirm(`Remove blog ${blogToDelete.title}?`)) {
-      try {
-        await blogService.remove(blogToDelete);
-        notificationService(`Blog ${blogToDelete.title} deleted!`);
-        setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id));
-      } catch (error) {
-        notificationService('Error: Could not delete the blog!');
-      }
-    }
-  };
 
   const compareLikes = (a, b) => {
     if (a.likes > b.likes) return -1;
@@ -101,6 +94,9 @@ const App = () => {
   };
 
   const blogList = () => {
+
+    const blogsToShow = blogs.sort(compareLikes);
+
     return (
       <div>
         <p>
@@ -110,13 +106,12 @@ const App = () => {
           <NewBlogForm handleNewBlog={createNewBlog} />
         </Togglable>
         <div>
-          {blogs.sort(compareLikes).map((blog) => (
+          {blogsToShow.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}
               updateBlog={updateBlog}
               user={user}
-              removeBlog={removeBlog}
             />
           ))}
         </div>
