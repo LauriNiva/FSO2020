@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { deleteABlog, likeABlog } from '../reducers/blogReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../reducers/notificationReducer';
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch();
+
+  const currentUserUsername = useSelector((state) => state.users.username);
+  const isOwner = currentUserUsername === blog.user.username;
 
   const blogStyle = {
     paddingTop: 10,
@@ -49,7 +52,7 @@ const Blog = ({ blog, user }) => {
           <button onClick={likeBlog}>Like</button>
         </div>
         <div>{blog.user.name}</div>
-        {blog.user.username === user.username && (
+        {isOwner && (
           <button style={removeButtonStyle} onClick={() => removeBlog(blog)}>
             Remove
           </button>
