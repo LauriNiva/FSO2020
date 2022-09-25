@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Blog from './components/Blog';
 import Loginform from './components/Loginform';
@@ -10,6 +11,7 @@ import blogService from './services/blogs';
 import { setNotification } from './reducers/notificationReducer';
 import { setInitialBlogs, createANewBlog } from './reducers/blogReducer';
 import { logoutUser, setUser } from './reducers/userReducer';
+import Users from './components/Users';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -99,8 +101,10 @@ const App = () => {
         <h1>Blog. list</h1>
         <Notification message={notificationMessage} />
       </div>
-
-      {!user ? <Loginform /> : blogList()}
+      <Routes>
+        <Route path="/" element={!user ? <Loginform /> : blogList()} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
     </div>
   );
 };
