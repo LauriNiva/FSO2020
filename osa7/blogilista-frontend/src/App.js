@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useMatch } from 'react-router-dom';
 import './App.css';
 import Blog from './components/Blog';
 import Loginform from './components/Loginform';
@@ -12,6 +12,8 @@ import { setNotification } from './reducers/notificationReducer';
 import { setInitialBlogs, createANewBlog } from './reducers/blogReducer';
 import { logoutUser, setUser } from './reducers/userReducer';
 import Users from './components/Users';
+import User from './components/User';
+import { getAllUsers } from './reducers/allUsersReducer';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,8 +24,16 @@ const App = () => {
     dispatch(setInitialBlogs());
   }, []);
 
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
   const user = useSelector((state) => state.users);
 
+  const match = useMatch('/users/:id');
+  const allUsers = useSelector((state) => state.allUsers);
+  const chosenUser =
+    match && allUsers.find((user) => user.id === match.params.id);
   const notificationMessage = useSelector(
     (state) => state.notifications.message
   );
@@ -80,9 +90,6 @@ const App = () => {
 
     return (
       <div>
-        <p>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
-        </p>
         <Togglable buttonLabel="Create" ref={blogFormRef}>
           <NewBlogForm handleNewBlog={createNewBlog} />
         </Togglable>
@@ -100,10 +107,18 @@ const App = () => {
       <div className="top-container">
         <h1>Blog. list</h1>
         <Notification message={notificationMessage} />
+        {!user ? (
+          <Loginform />
+        ) : (
+          <p>
+            {user.name} logged in <button onClick={handleLogout}>logout</button>
+          </p>
+        )}
       </div>
       <Routes>
-        <Route path="/" element={!user ? <Loginform /> : blogList()} />
+        <Route path="/users/:id" element={<User user={chosenUser} />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/" element={user && blogList()} />
       </Routes>
     </div>
   );
