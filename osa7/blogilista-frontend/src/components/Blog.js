@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { deleteABlog, likeABlog } from '../reducers/blogReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../reducers/notificationReducer';
@@ -7,6 +7,9 @@ const Blog = ({ blog }) => {
   const dispatch = useDispatch();
 
   const currentUserUsername = useSelector((state) => state.users.username);
+
+  if (!blog) return null;
+
   const isOwner = currentUserUsername === blog.user.username;
 
   const blogStyle = {
@@ -14,12 +17,6 @@ const Blog = ({ blog }) => {
     paddingLeft: 2,
     border: '1px solid',
     marginBottom: 5,
-  };
-
-  const [showFullInfo, setShowFullInfo] = useState(false);
-
-  const toggleView = () => {
-    setShowFullInfo(!showFullInfo);
   };
 
   const likeBlog = () => {
@@ -38,35 +35,27 @@ const Blog = ({ blog }) => {
     }
   };
 
-  const fullInfo = () => {
-    const removeButtonStyle = {
-      color: 'white',
-      background: 'darkred',
-      borderRadius: '5px',
-    };
-    return (
-      <div>
-        <div>{blog.url}</div>
-        <div>
-          Likes: {blog.likes}
-          <button onClick={likeBlog}>Like</button>
-        </div>
-        <div>{blog.user.name}</div>
-        {isOwner && (
-          <button style={removeButtonStyle} onClick={() => removeBlog(blog)}>
-            Remove
-          </button>
-        )}
-      </div>
-    );
+  const removeButtonStyle = {
+    color: 'white',
+    background: 'darkred',
+    borderRadius: '5px',
   };
 
   return (
     <div style={blogStyle} className="blog">
       <h2>{blog.title}</h2>
       <h3>{blog.author}</h3>
-      <button onClick={toggleView}>{showFullInfo ? 'Hide' : 'View'}</button>
-      {showFullInfo ? fullInfo() : ''}
+      <div>{blog.url}</div>
+      <div>
+        Likes: {blog.likes}
+        <button onClick={likeBlog}>Like</button>
+      </div>
+      <div>{blog.user.name}</div>
+      {isOwner && (
+        <button style={removeButtonStyle} onClick={() => removeBlog(blog)}>
+          Remove
+        </button>
+      )}
     </div>
   );
 };

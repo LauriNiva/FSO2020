@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, useMatch } from 'react-router-dom';
+import { Routes, Route, useMatch, Link } from 'react-router-dom';
 import './App.css';
 import Blog from './components/Blog';
 import Loginform from './components/Loginform';
@@ -30,10 +30,15 @@ const App = () => {
 
   const user = useSelector((state) => state.users);
 
-  const match = useMatch('/users/:id');
+  const userMatch = useMatch('/users/:id');
   const allUsers = useSelector((state) => state.allUsers);
   const chosenUser =
-    match && allUsers.find((user) => user.id === match.params.id);
+    userMatch && allUsers.find((user) => user.id === userMatch.params.id);
+
+  const blogMatch = useMatch('/blogs/:id');
+  const chosenBlog =
+    blogMatch && blogs.find((blog) => blog.id === blogMatch.params.id);
+
   const notificationMessage = useSelector(
     (state) => state.notifications.message
   );
@@ -88,6 +93,14 @@ const App = () => {
   const blogList = () => {
     const blogsToShow = blogs.sort(compareLikes);
 
+    const blogStyle = {
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingBottom: 10,
+      border: '1px solid',
+      marginBottom: 5,
+    };
+
     return (
       <div>
         <Togglable buttonLabel="Create" ref={blogFormRef}>
@@ -95,7 +108,9 @@ const App = () => {
         </Togglable>
         <div>
           {blogsToShow.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <div key={blog.id} style={blogStyle} className="blog">
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </div>
           ))}
         </div>
       </div>
@@ -118,6 +133,7 @@ const App = () => {
       <Routes>
         <Route path="/users/:id" element={<User user={chosenUser} />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/blogs/:id" element={<Blog blog={chosenBlog} />} />
         <Route path="/" element={user && blogList()} />
       </Routes>
     </div>
