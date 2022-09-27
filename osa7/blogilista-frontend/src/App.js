@@ -117,18 +117,27 @@ const App = () => {
     );
   };
 
+  const Navbar = () => {
+    return (
+      <div className="nav">
+        <div className='nav-links'>
+          <Link to="/">blogs</Link>
+          <Link to="/users">users</Link>
+        </div>
+        <div>
+          {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
+      {user && <Navbar />}
       <div className="top-container">
         <h1>Blog. list</h1>
         <Notification message={notificationMessage} />
-        {!user ? (
-          <Loginform />
-        ) : (
-          <p>
-            {user.name} logged in <button onClick={handleLogout}>logout</button>
-          </p>
-        )}
+        {!user && <Loginform />}
       </div>
       <Routes>
         <Route path="/users/:id" element={<User user={chosenUser} />} />

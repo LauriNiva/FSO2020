@@ -16,3 +16,14 @@
 .notification-error {
   color: rgb(255, 0, 0);
 }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  min-height: 20px;
+  background-color: rgb(216, 216, 216);
+}
+
+.nav-links a {
+  margin-right: 10px;
+}
