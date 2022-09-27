@@ -1,7 +1,32 @@
-import React from 'react';
-import { deleteABlog, likeABlog } from '../reducers/blogReducer';
+import React, { useState } from 'react';
+import { commentABlog, deleteABlog, likeABlog } from '../reducers/blogReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../reducers/notificationReducer';
+
+
+const NewCommentForm = ({ blog }) => {
+  const [newComment, setNewComment] = useState('');
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(commentABlog(blog.id, newComment));
+    setNewComment('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="comment"
+        type="text"
+        value={newComment}
+        onChange={({ target }) => setNewComment(target.value)}
+      />
+      <button>add comment</button>
+    </form>
+  );
+};
+
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch();
@@ -41,6 +66,7 @@ const Blog = ({ blog }) => {
     borderRadius: '5px',
   };
 
+
   return (
     <div style={blogStyle} className="blog">
       <h2>{blog.title}</h2>
@@ -57,10 +83,12 @@ const Blog = ({ blog }) => {
         </button>
       )}
       <h3>comments</h3>
+      <NewCommentForm blog={blog} />
       <ul>
-        {blog.comments && blog.comments.map(comment => {
-          return <li key={`${comment}${Math.random()}`}>{comment}</li>;
-        })}
+        {blog.comments &&
+          blog.comments.map((comment) => {
+            return <li key={`${comment}${Math.random()}`}>{comment}</li>;
+          })}
       </ul>
     </div>
   );

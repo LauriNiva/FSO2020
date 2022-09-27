@@ -58,4 +58,15 @@ export const deleteABlog = (blogToDelete) => {
   };
 };
 
+export const commentABlog = (blogId, comment) => {
+  return async (dispatch) => {
+    try {
+      const updatedBlog = await blogService.comment(blogId, comment);
+      dispatch(updateABlog(updatedBlog));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export default blogsSlice.reducer;
