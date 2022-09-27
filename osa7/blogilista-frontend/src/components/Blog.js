@@ -56,6 +56,12 @@ const Blog = ({ blog }) => {
           Remove
         </button>
       )}
+      <h3>comments</h3>
+      <ul>
+        {blog.comments && blog.comments.map(comment => {
+          return <li key={`${comment}${Math.random()}`}>{comment}</li>;
+        })}
+      </ul>
     </div>
   );
 };
