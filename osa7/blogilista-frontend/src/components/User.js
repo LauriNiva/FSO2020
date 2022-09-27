@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function User({ user }) {
 
@@ -7,14 +8,16 @@ function User({ user }) {
   if(!user) return <div></div>;
 
   return (
-    <div>
+    <div className="user-container">
       <h2>{user.name}</h2>
       <h4>added blogs</h4>
-      <li>
+      <ul>
         {user.blogs.map((blog) => (
-          <ul key={blog.id}>{blog.title}</ul>
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
         ))}
-      </li>
+      </ul>
     </div>
   );
 }

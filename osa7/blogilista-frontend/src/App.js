@@ -93,24 +93,19 @@ const App = () => {
   const blogList = () => {
     const blogsToShow = blogs.sort(compareLikes);
 
-    const blogStyle = {
-      paddingTop: 10,
-      paddingLeft: 10,
-      paddingBottom: 10,
-      border: '1px solid',
-      marginBottom: 5,
-    };
-
     return (
       <div>
-        <Togglable buttonLabel="Create" ref={blogFormRef}>
-          <NewBlogForm handleNewBlog={createNewBlog} />
-        </Togglable>
-        <div>
+        <h2>Blogs</h2>
+        <div className="new-blog-form-container">
+          <Togglable buttonLabel="Create" ref={blogFormRef}>
+            <NewBlogForm handleNewBlog={createNewBlog} />
+          </Togglable>
+        </div>
+        <div className="blog-list">
           {blogsToShow.map((blog) => (
-            <div key={blog.id} style={blogStyle} className="blog">
-              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-            </div>
+            <Link key={blog.id} to={`/blogs/${blog.id}`}>
+              <div className="blog">{blog.title} <span className='blog-list-author'>by {blog.author}</span></div>
+            </Link>
           ))}
         </div>
       </div>
@@ -120,31 +115,42 @@ const App = () => {
   const Navbar = () => {
     return (
       <div className="nav">
-        <div className='nav-links'>
-          <Link to="/">blogs</Link>
-          <Link to="/users">users</Link>
+        <div className="nav-title">
+          <h1>Blog.list app</h1>
         </div>
-        <div>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
-        </div>
+        {user && (
+          <>
+            <div className="nav-links">
+              <Link to="/">blogs</Link>
+              <Link to="/users">users</Link>
+            </div>
+            <div className="nav-user">
+              {user.name} logged in{' '}
+              <button onClick={handleLogout}>logout</button>
+            </div>
+          </>
+        )}
       </div>
     );
   };
 
   return (
-    <div>
-      {user && <Navbar />}
+    <div className="page-container">
+      <Navbar />
       <div className="top-container">
-        <h1>Blog. list</h1>
-        <Notification message={notificationMessage} />
+        <div className="notification-container">
+          <Notification message={notificationMessage} />
+        </div>
         {!user && <Loginform />}
       </div>
-      <Routes>
-        <Route path="/users/:id" element={<User user={chosenUser} />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/blogs/:id" element={<Blog blog={chosenBlog} />} />
-        <Route path="/" element={user && blogList()} />
-      </Routes>
+      <div className="main-container">
+        <Routes>
+          <Route path="/users/:id" element={<User user={chosenUser} />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/blogs/:id" element={<Blog blog={chosenBlog} />} />
+          <Route path="/" element={user && blogList()} />
+        </Routes>
+      </div>
     </div>
   );
 };

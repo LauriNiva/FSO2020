@@ -9,6 +9,10 @@ const NewBlogForm = ({ handleNewBlog }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if(!blogTitle || !blogAuthor || !blogUrl) {
+      return;
+    }
+
     const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
     handleNewBlog(newBlog);
 
@@ -18,10 +22,10 @@ const NewBlogForm = ({ handleNewBlog }) => {
   };
 
   return (
-    <div>
+    <div className="new-blog-form">
       <h2>Create a new blog</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="new-blog-form-input">
           Title:
           <input
             name="title"
@@ -30,7 +34,7 @@ const NewBlogForm = ({ handleNewBlog }) => {
             onChange={({ target }) => setBlogTitle(target.value)}
           />
         </div>
-        <div>
+        <div className="new-blog-form-input">
           Author:
           <input
             name="author"
@@ -39,7 +43,7 @@ const NewBlogForm = ({ handleNewBlog }) => {
             onChange={({ target }) => setBlogAuthor(target.value)}
           />
         </div>
-        <div>
+        <div className="new-blog-form-input">
           Url:
           <input
             name="url"
@@ -48,6 +52,7 @@ const NewBlogForm = ({ handleNewBlog }) => {
             onChange={({ target }) => setBlogUrl(target.value)}
           />
         </div>
+        All fields required
         <button type="submit">Create</button>
       </form>
     </div>
