@@ -26,7 +26,7 @@ const App = () => {
       <Notify errorMessage={errorMessage} />
       <Persons persons={result.data.allPersons} />
       <PersonForm setError={notify} />
-      <PhoneForm />
+      <PhoneForm setError={notify} />
     </div>
   );
 };
