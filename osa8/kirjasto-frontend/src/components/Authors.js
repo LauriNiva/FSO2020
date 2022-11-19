@@ -2,20 +2,18 @@ import { useQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../queries';
 
 const Authors = (props) => {
-  const {data, loading, error} = useQuery(ALL_AUTHORS);
+  const { data, loading, error } = useQuery(ALL_AUTHORS);
 
-  console.log(data)
-  
   if (!props.show) {
-    return null
+    return null;
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error {error}</div>
+    return <div>Error {error}</div>;
   }
 
   return (
@@ -39,6 +37,6 @@ const Authors = (props) => {
       </table>
     </div>
   );
-}
+};
 
-export default Authors
+export default Authors;
