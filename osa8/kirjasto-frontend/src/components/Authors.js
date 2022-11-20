@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 import { ALL_AUTHORS, UPDATE_AUTHOR } from '../queries';
 
-const BirthyearForm = () => {
-  const [name, setName] = useState('');
+const BirthyearForm = ({ authors }) => {
+  const [name, setName] = useState(authors[0]?.name);
   const [born, setBorn] = useState('');
 
   const [updateAuthor] = useMutation(UPDATE_AUTHOR);
@@ -13,7 +13,6 @@ const BirthyearForm = () => {
     e.preventDefault();
     updateAuthor({ variables: { name, setBornTo: parseInt(born) } });
     setBorn('');
-    setName('');
   };
 
   return (
@@ -22,7 +21,12 @@ const BirthyearForm = () => {
       <form onSubmit={submit}>
         <div>
           name
-          <input value={name} onChange={(e) => setName(e.target.value)} />
+          {/* <input value={name} onChange={(e) => setName(e.target.value)} /> */}
+          <select value={name} onChange={(e) => setName(e.target.value)}>
+            {authors.map((author) => (
+              <option key={author.id} value={author.name}>{author.name}</option>
+            ))}
+          </select>
         </div>
         <div>
           born
@@ -72,7 +76,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <BirthyearForm />
+      <BirthyearForm authors={data.allAuthors} />
     </div>
   );
 };
