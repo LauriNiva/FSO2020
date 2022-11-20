@@ -107,10 +107,7 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ): Book
-    editAuthor(
-      name: String!
-      setBornTo: Int!
-    ): Author
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
   type Book {
     title: String!
@@ -122,6 +119,7 @@ const typeDefs = gql`
     name: String!
     bookCount: Int!
     born: Int
+    id: ID!
   }
 `;
 
@@ -148,8 +146,7 @@ const resolvers = {
       let aurhorsToReturn = [];
       authors.forEach((author) =>
         aurhorsToReturn.push({
-          name: author.name,
-          born: author.born,
+          ...author,
           bookCount: books.filter((book) => book.author === author.name).length,
         })
       );
