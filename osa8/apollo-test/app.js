@@ -8,10 +8,11 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Person = require('./models/person');
 const User = require('./models/user');
+require('dotenv').config();
 
-const MONGODB_URI = 'mongodb+srv://databaseurlhere';
+const MONGODB_URI = process.env.MONGODB_URI;
 
-const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 console.log('connecting to', MONGODB_URI);
 
