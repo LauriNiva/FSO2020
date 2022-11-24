@@ -135,42 +135,36 @@ const resolvers = {
       return Author.countDocuments();
     },
     allBooks: async (root, args) => {
-      return Book.find({}).populate('author');
-      // let booksToReturn = [...books];
-      // if (args.author) {
-      //   booksToReturn = booksToReturn.filter(
-      //     (book) => book.author === args.author
-      //   );
-      // }
-      // if (args.genre) {
-      //   booksToReturn = booksToReturn.filter((book) =>
-      //     book.genres.includes(args.genre)
-      //   );
-      // }
+      const query = {};
 
-      // return booksToReturn;
+      if (args.author) {
+        query.author = await Author.find({ name: args.author });
+      }
+
+      if (args.genre) {
+        query.genres = args.genre;
+      }
+
+      return await Book.find(query).populate('author');
     },
     allAuthors: async () => {
-      return Author.find({});
-      let aurhorsToReturn = [];
-      authors.forEach((author) =>
-        aurhorsToReturn.push({
-          ...author,
-          bookCount: books.filter((book) => book.author === author.name).length,
-        })
-      );
+      const aurhorsToReturn = await Author.find({});
       return aurhorsToReturn;
+    },
+  },
+  Author: {
+    bookCount: async (root) => {
+      return (await Book.find({ author: root })).length;
     },
   },
   Mutation: {
     addBook: async (root, args) => {
       let authorInDb = await Author.findOne({ name: args.author });
-      console.log(authorInDb)
+      console.log(authorInDb);
       if (!authorInDb) {
         const newAuthor = new Author({ name: args.author });
         await newAuthor.save();
-        authorInDb = newAuthor
-        // authors.push({ name: args.author, id: uuid() });
+        authorInDb = newAuthor;
       }
       const savedBook = new Book({
         title: args.title,
@@ -180,11 +174,11 @@ const resolvers = {
       });
       return (await savedBook.save()).populate('author');
     },
-    editAuthor: (root, args) => {
-      const authorToEdit = authors.find((author) => author.name === args.name);
+    editAuthor: async (root, args) => {
+      const authorToEdit = await Author.findOne({ name: args.name });
       if (!authorToEdit) return null;
       authorToEdit.born = args.setBornTo;
-      return authorToEdit;
+      return authorToEdit.save();
     },
   },
 };
