@@ -24,7 +24,9 @@ const BirthyearForm = ({ authors }) => {
           {/* <input value={name} onChange={(e) => setName(e.target.value)} /> */}
           <select value={name} onChange={(e) => setName(e.target.value)}>
             {authors.map((author) => (
-              <option key={author.id} value={author.name}>{author.name}</option>
+              <option key={author.id} value={author.name}>
+                {author.name}
+              </option>
             ))}
           </select>
         </div>
@@ -42,10 +44,10 @@ const BirthyearForm = ({ authors }) => {
   );
 };
 
-const Authors = (props) => {
+const Authors = ({ show, token }) => {
   const { data, loading, error } = useQuery(ALL_AUTHORS);
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
@@ -76,7 +78,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <BirthyearForm authors={data.allAuthors} />
+      {token && <BirthyearForm authors={data.allAuthors} />}
     </div>
   );
 };
