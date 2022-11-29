@@ -1,5 +1,5 @@
 import { useApolloClient, useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginForm from './LoginForm';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -12,6 +12,11 @@ const App = () => {
 
   const result = useQuery(ALL_PERSONS, { pollInterval: 0 });
   const client = useApolloClient();
+
+  useEffect(() => {
+    const token = localStorage.getItem('phonenumbers-user-token');
+    if (token) setToken(token);
+  }, []);
 
   if (result.loading) {
     return <div>loading...</div>;
@@ -28,16 +33,16 @@ const App = () => {
     setToken(null);
     localStorage.clear();
     client.resetStore();
-  }
+  };
 
-  if(!token) {
+  if (!token) {
     return (
       <div>
         <Notify errorMessage={errorMessage} />
         <h2>Login</h2>
         <LoginForm setToken={setToken} setError={notify} />
       </div>
-    )
+    );
   }
 
   return (

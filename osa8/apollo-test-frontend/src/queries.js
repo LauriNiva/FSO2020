@@ -5,7 +5,7 @@ export const CREATE_PERSON = gql`
     $name: String!
     $street: String!
     $city: String!
-    $phone: String!
+    $phone: String
   ) {
     addPerson(name: $name, street: $street, city: $city, phone: $phone) {
       name
