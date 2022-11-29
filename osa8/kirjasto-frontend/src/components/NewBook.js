@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries';
 
-const NewBook = ({show, token, setPage}) => {
+const NewBook = ({show, token}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [published, setPublished] = useState('');
@@ -16,9 +16,6 @@ const NewBook = ({show, token, setPage}) => {
     return null;
   }
 
-  if(!token) {
-    setPage('authors');
-  }
 
   const submit = async (event) => {
     event.preventDefault();

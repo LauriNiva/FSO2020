@@ -76,6 +76,8 @@ const resolvers = {
     allBooks: async (root, args) => {
       const query = {};
 
+      console.log('args', args)
+
       if (args.author) {
         query.author = await Author.find({ name: args.author });
       }

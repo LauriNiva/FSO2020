@@ -6,6 +6,10 @@ const Books = (props) => {
   const { data, error, loading } = useQuery(ALL_BOOKS);
   const [chosenGenre, setChosenGenre] = useState(null);
 
+  const genreBooks = useQuery(ALL_BOOKS, {
+    variables: { genre: chosenGenre ? chosenGenre : null },
+  });
+
   if (!props.show) {
     return null;
   }
@@ -20,9 +24,11 @@ const Books = (props) => {
 
   const books = data.allBooks;
 
-  const booksToShow = chosenGenre
-    ? books.filter((book) => book.genres.includes(chosenGenre))
-    : books;
+  // const booksToShow = chosenGenre
+  //   ? books.filter((book) => book.genres.includes(chosenGenre))
+  //   : books;
+
+  const booksToShow = genreBooks.data?.allBooks;
 
   const genreButtons = () => {
     if (!books) return null;
@@ -56,22 +62,26 @@ const Books = (props) => {
     <div>
       <h2>books</h2>
       {genreButtons()}
-      <table>
-        <tbody>
-          <tr>
-            <th>Book</th>
-            <th>Author</th>
-            <th>Published</th>
-          </tr>
-          {booksToShow.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
+      {genreBooks.loading ? (
+        <div>...</div>
+      ) : (
+        <table>
+          <tbody>
+            <tr>
+              <th>Book</th>
+              <th>Author</th>
+              <th>Published</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            {booksToShow?.map((a) => (
+              <tr key={a.title}>
+                <td>{a.title}</td>
+                <td>{a.author.name}</td>
+                <td>{a.published}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

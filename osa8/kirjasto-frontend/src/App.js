@@ -18,6 +18,7 @@ const App = () => {
   }, []);
 
   const logout = () => {
+    setPage('authors');
     setToken(null);
     localStorage.clear();
     client.resetStore();
@@ -43,9 +44,9 @@ const App = () => {
 
       <Authors token={token} show={page === 'authors'} />
       <Books show={page === 'books'} />
-      <NewBook setPage={setPage} token={token} show={page === 'add'} />
+      <NewBook token={token} show={page === 'add'} />
       <Login setPage={setPage} setToken={setToken} show={page === 'login'} />
-      <Recommend show={page === 'recommend'} />
+      <Recommend token={token} show={page === 'recommend'} />
     </div>
   );
 };
