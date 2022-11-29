@@ -34,6 +34,7 @@ const Books = (props) => {
     return [
       <button
         style={{ fontWeight: chosenGenre ? 'normal' : 'bold' }}
+        key={'allgenres'}
         onClick={() => setChosenGenre(null)}
       >
         Kaikki genret
