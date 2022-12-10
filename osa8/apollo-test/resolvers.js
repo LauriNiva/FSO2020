@@ -1,9 +1,13 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
+const { PubSub } = require('graphql-subscriptions');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const Person = require('./models/person');
 const User = require('./models/user');
 
 const JWT_SECRET = process.env.JWT_SECRET;
+
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -45,6 +49,9 @@ const resolvers = {
           invalidArgs: args,
         });
       }
+
+      pubsub.publish('PERSON_ADDED', { personAdded: person });
+
       return person;
     },
     addAsFriend: async (root, args, { currentUser }) => {
@@ -100,6 +107,11 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
+  },
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterator('PERSON_ADDED'),
     },
   },
 };

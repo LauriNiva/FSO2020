@@ -51,6 +51,10 @@ const typeDefs = gql`
 
     login(username: String!, password: String!): Token
   }
+
+  type Subscription {
+    personAdded: Person!
+  }
 `;
 
 module.exports = typeDefs;
