@@ -1,11 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useApolloClient } from '@apollo/client';
+import { useSubscription, useApolloClient } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 import Authors from './components/Authors';
 import Books from './components/Books';
 import Login from './components/Login';
 import NewBook from './components/NewBook';
 import { Recommend } from './components/Recommend';
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      author {
+        name
+      }
+      title
+    }
+  }
+`;
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -23,6 +35,15 @@ const App = () => {
     localStorage.clear();
     client.resetStore();
   };
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data.data.bookAdded);
+      window.alert(
+        `Uusi kirja lisättiin: ${data.data.bookAdded.title} (${data.data.bookAdded.author.name})`
+      );
+    },
+  });
 
   return (
     <div>
