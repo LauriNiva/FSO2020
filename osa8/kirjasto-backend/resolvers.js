@@ -42,6 +42,7 @@ const resolvers = {
     },
   },
   Author: {
+    //no N+1
     bookCount: async (root) => {
       return (await Book.find({ author: root })).length;
     },
