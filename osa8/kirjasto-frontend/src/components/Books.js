@@ -6,9 +6,13 @@ const Books = (props) => {
   const { data, error, loading } = useQuery(ALL_BOOKS);
   const [chosenGenre, setChosenGenre] = useState(null);
 
+  console.log('data', data)
+
   const genreBooks = useQuery(ALL_BOOKS, {
     variables: { genre: chosenGenre ? chosenGenre : null },
   });
+
+  console.log('genre', genreBooks.data);
 
   if (!props.show) {
     return null;
@@ -28,7 +32,9 @@ const Books = (props) => {
   //   ? books.filter((book) => book.genres.includes(chosenGenre))
   //   : books;
 
-  const booksToShow = genreBooks.data?.allBooks;
+  const booksToShow = chosenGenre ? genreBooks.data?.allBooks : books;
+
+  console.log('toshow', booksToShow);
 
   const genreButtons = () => {
     if (!books) return null;

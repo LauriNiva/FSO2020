@@ -7,6 +7,7 @@ import Books from './components/Books';
 import Login from './components/Login';
 import NewBook from './components/NewBook';
 import { Recommend } from './components/Recommend';
+import { ALL_BOOKS } from './queries';
 
 export const BOOK_ADDED = gql`
   subscription {
@@ -15,9 +16,27 @@ export const BOOK_ADDED = gql`
         name
       }
       title
+      genres
+      published
     }
   }
 `;
+
+export const updateCache = (cache, query, addedBook) => {
+  console.log('cache', cache);
+  const uniqueByName = (arrayOfBooks) => {
+    let seen = new Set();
+    return arrayOfBooks.filter((book) => {
+      return seen.has(book.title) ? false : seen.add(book.title);
+    });
+  };
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqueByName(allBooks.concat(addedBook)),
+    };
+  });
+};
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -38,10 +57,17 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log(data.data.bookAdded);
+      const addedBook = data.data.bookAdded;
+      console.log(addedBook);
       window.alert(
-        `Uusi kirja lisättiin: ${data.data.bookAdded.title} (${data.data.bookAdded.author.name})`
+        `Uusi kirja lisättiin: ${addedBook.title} (${addedBook.author.name})`
       );
+      // client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+      //   return {
+      //     allBooks: allBooks.concat(addedBook),
+      //   };
+      // });
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
     },
   });
 
