@@ -42,11 +42,11 @@ const calculateExercises = (
 };
 
 const parseArgs = (
-  arguments: Array<string>
+  args: Array<string>
 ): { target: number; days: Array<number> } => {
-  if (arguments.length < 4) throw new Error('Not enough arguments');
+  if (args.length < 4) throw new Error('Not enough arguments');
 
-  const [_ig, _nore, targetArg, ...daysArg] = arguments;
+  const [_ig, _nore, targetArg, ...daysArg] = args;
 
   if (!isNaN(Number(targetArg)) && !daysArg.some((arg) => isNaN(Number(arg)))) {
     return {
