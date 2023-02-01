@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   if (isNaN(height) && isNaN(weight)) throw new Error('Not a number!');
 
   const bmi = weight / (((height / 100) * height) / 100);
