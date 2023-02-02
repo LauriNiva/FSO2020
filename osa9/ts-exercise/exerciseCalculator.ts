@@ -17,7 +17,7 @@ const calculateRating = (target: number, average: number): number => {
 
 const ratingDescriptions = ['You can do better!', 'Good job!', 'Amazing!'];
 
-const calculateExercises = (
+export const calculateExercises = (
   dailyExcerciseHours: Array<number>,
   target: number
 ): Result => {
