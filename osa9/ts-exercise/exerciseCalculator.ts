@@ -46,7 +46,7 @@ const parseArgs = (
 ): { target: number; days: Array<number> } => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
-  const [_ig, _nore, targetArg, ...daysArg] = args;
+  const [, , targetArg, ...daysArg] = args;
 
   if (!isNaN(Number(targetArg)) && !daysArg.some((arg) => isNaN(Number(arg)))) {
     return {
