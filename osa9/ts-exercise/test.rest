@@ -33,3 +33,14 @@ content-type: application/json
   "visibility": "good",
   "comment": "new flight"
 }
+
+###
+POST http://localhost:3001/api/patients
+content-type: application/json
+
+{
+"dateOfBirth": "1990-01-05",
+"gender": "male",
+"name": "John Doe",
+"occupation": "Analog evangelist"
+}
