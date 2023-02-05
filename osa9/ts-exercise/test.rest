@@ -22,3 +22,14 @@ content-type: application/json
 {
   "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5]
 }
+
+###
+POST http://localhost:3000/api/diaries
+content-type: application/json
+
+{
+  "date": "2022-05-11",
+  "weather": "cloudy",
+  "visibility": "good",
+  "comment": "new flight"
+}
