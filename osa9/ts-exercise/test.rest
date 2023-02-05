@@ -39,8 +39,9 @@ POST http://localhost:3001/api/patients
 content-type: application/json
 
 {
-"dateOfBirth": "1990-01-05",
+"dateOfBirth": "123",
 "gender": "male",
 "name": "John Doe",
-"occupation": "Analog evangelist"
+"occupation": "Analog evangelist",
+"ssn": "123-332"
 }
