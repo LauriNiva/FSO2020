@@ -18,6 +18,10 @@ const getNonSensitivePatients = (): Array<NonSensitivePatient> => {
   }));
 };
 
+const getSinglePublicPatient = (id: string): Patient | undefined => {
+  return patients.find((patient) => patient.id === id);
+};
+
 const addNewPatient = (patientEntry: NewPatient): Patient => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const id: string = uuid();
@@ -34,4 +38,5 @@ export default {
   getPatients,
   getNonSensitivePatients,
   addNewPatient,
+  getSinglePublicPatient,
 };
