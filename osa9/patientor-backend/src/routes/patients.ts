@@ -11,7 +11,7 @@ router.get('/', (_req, res) => {
 router.get('/:id', (req, res) => {
   const patientId = req.params.id;
 
-  res.send(patientService.getSinglePublicPatient(patientId));
+  res.send(patientService.getSinglePatient(patientId));
 });
 
 router.post('/', (req, res) => {
