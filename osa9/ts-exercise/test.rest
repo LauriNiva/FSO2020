@@ -45,3 +45,17 @@ content-type: application/json
 "occupation": "Analog evangelist",
 "ssn": "123-332"
 }
+
+
+###
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+{
+  "description": "dead",
+  "date": "020304",
+  "specialist": "doctor",
+  "type": "OccupationalHealthcare",
+  "employerName": "biness",
+"diagnosisCodes": ["asd"]
+}
