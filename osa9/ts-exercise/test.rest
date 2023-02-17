@@ -55,7 +55,6 @@ content-type: application/json
   "description": "dead",
   "date": "020304",
   "specialist": "doctor",
-  "type": "OccupationalHealthcare",
-  "employerName": "biness",
-"diagnosisCodes": ["asd"]
+  "type": "HealthCheck",
+  "healthCheckRating": 2
 }

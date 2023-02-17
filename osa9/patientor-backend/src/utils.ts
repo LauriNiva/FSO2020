@@ -1,6 +1,7 @@
 import {
   Diagnosis,
   Discharge,
+  Entry,
   EntryWithoutId,
   Gender,
   HealthCheckRating,
@@ -94,15 +95,13 @@ type FieldsForNewEntry = {
   healthCheckRating: unknown;
 };
 
-const isEntryType = (
-  type: string
-): type is 'HealthCheck' | 'Hospital' | 'OccupationalHealthcare' => {
-  return !!(type === 'HealthCheck' || 'Hospital' || 'OccupationalHealthcare');
+const typesOfEntries = ['Hospital', 'HealthCheck', 'OccupationalHealthcare'];
+
+const isEntryType = (type: string): type is Entry['type'] => {
+  return Boolean(typesOfEntries.includes(type));
 };
 
-const parseType = (
-  type: unknown
-): 'HealthCheck' | 'Hospital' | 'OccupationalHealthcare' => {
+const parseType = (type: unknown): Entry['type'] => {
   if (!type || !isString(type) || !isEntryType(type)) {
     throw new Error('Incorrect or missing type: ' + type);
   }
@@ -159,8 +158,6 @@ const parseHealthCheckRating = (
   healthCheckRating: unknown
 ): HealthCheckRating => {
   if (
-    !healthCheckRating ||
-    !isString(healthCheckRating) ||
     !isHealthCheckRating(healthCheckRating)
   ) {
     throw new Error(
